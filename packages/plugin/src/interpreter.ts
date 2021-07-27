@@ -14,7 +14,7 @@ import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
-
+import WingPatch from './interpreter_wing'
 
 type JsonOptionsMap = {
     [extensionName: string]: rt.JsonValue
@@ -192,6 +192,7 @@ export class Interpreter {
         if (!type) {
             const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
             type = this.buildMessageType(typeName, descriptor.field, ourFileOptions["ts.exclude_options"]);
+            WingPatch.WingPatchType(type)
             this.messageTypes.set(typeName, type);
         }
         return type;

@@ -223,14 +223,15 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 }
             });
 
-            registry.visitTypes(fileDescriptor, descriptor => {
+            registry.visitTypes(fileDescriptor, (descriptor:any) => {
                 // still not interested in synthetic types like map entry messages
                 if (registry.isSyntheticElement(descriptor)) return;
-
-                if (DescriptorProto.is(descriptor)) {
+                // WING: 不生产DescriptorType
+                if (DescriptorProto.is(descriptor) && false) {
                     genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
                 }
-                if (ServiceDescriptorProto.is(descriptor)) {
+                // WING: 不生产ServiceDescriptorProto
+                if (ServiceDescriptorProto.is(descriptor) && false) {
 
                     // service type
                     genServiceType.generateServiceType(outMain, descriptor)
